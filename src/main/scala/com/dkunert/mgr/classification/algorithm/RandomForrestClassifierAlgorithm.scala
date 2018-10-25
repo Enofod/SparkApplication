@@ -1,12 +1,12 @@
 package com.dkunert.mgr.classification.algorithm
 
 import org.apache.spark.ml.Pipeline
-import org.apache.spark.ml.classification.LogisticRegression
+import org.apache.spark.ml.classification.{RandomForestClassificationModel, RandomForestClassifier}
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorIndexer}
 import org.apache.spark.sql.DataFrame
 
-object MultinominalLogisticRegressionAlgorithm {
+object RandomForrestClassifierAlgorithm {
 
   def run(transformedData: DataFrame): Unit = {
 
@@ -25,12 +25,10 @@ object MultinominalLogisticRegressionAlgorithm {
     // Split the data into training and test sets (30% held out for testing).
     val Array(trainingData, testData) = transformedData.randomSplit(Array(0.7, 0.3))
 
-    // Trains a bisecting k-means model.
-    val lr = new LogisticRegression()
-      .setMaxIter(10)
-      .setRegParam(0.3)
-      .setElasticNetParam(0.8)
-      .setFamily("multinomial")
+    val rf = new RandomForestClassifier()
+      .setLabelCol("indexedLabel")
+      .setFeaturesCol("indexedFeatures")
+      .setNumTrees(10)
 
     // Convert indexed labels back to original labels.
     val labelConverter = new IndexToString()
@@ -40,7 +38,7 @@ object MultinominalLogisticRegressionAlgorithm {
 
     // Chain indexers and tree in a Pipeline.
     val pipeline = new Pipeline()
-      .setStages(Array(labelIndexer, featureIndexer, lr, labelConverter))
+      .setStages(Array(labelIndexer, featureIndexer, rf, labelConverter))
 
     trainingData.head(10).foreach(println)
 
@@ -60,6 +58,9 @@ object MultinominalLogisticRegressionAlgorithm {
       .setMetricName("accuracy")
     val accuracy = evaluator.evaluate(predictions)
     println("Test Error = " + (1.0 - accuracy))
+
+    val rfModel = model.stages(2).asInstanceOf[RandomForestClassificationModel]
+    println("Learned classification forest model:\n" + rfModel.toDebugString)
   }
 
 }
