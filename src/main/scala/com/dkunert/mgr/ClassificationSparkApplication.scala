@@ -1,6 +1,5 @@
 package com.dkunert.mgr
 
-import com.dkunert.mgr.classification.algorithm.RandomForrestClassifierAlgorithm
 import com.dkunert.mgr.datacleanup.PokerDataCleanup
 import com.dkunert.mgr.factory.SparkSessionFactory
 import com.dkunert.mgr.loader.CsvDataLoader
@@ -27,7 +26,11 @@ object ClassificationSparkApplication {
 
     //MultinominalLogisticRegressionAlgorithm.run(transformedData)
     //DecisionTreeClassifierAlgorithm.run(transformedData)
-    RandomForrestClassifierAlgorithm.run(transformedData)
+    //RandomForrestClassifierAlgorithm.run(transformedData)
+    //GradientBoostedTreeClassifierAlgorithm.run(transformedData) // ONLY FOR BINARY
+    //MultilayerPerceptronClassifierAlgorithm.run(transformedData)
+    //LineSupportVectorMachineAlgorithm.run(transformedData) // ONLY FOR BINARY
+    //NaiveBayesAlgorithm.run(transformedData) // ONLY FOR BINARY
     println("Processing time: " + BenchmarkUtil.getProcessingTime())
   }
 }
