@@ -8,7 +8,7 @@ object KMeansAlgorithm {
 
   def run(transformedData: DataFrame): Unit = {
     val kmeans = new KMeans()
-      .setK(5)
+      .setK(2)
       .setSeed(1)
 
     val model = kmeans.fit(transformedData)
@@ -17,9 +17,11 @@ object KMeansAlgorithm {
 
     val evaluator = new ClusteringEvaluator()
     val silhouette = evaluator.evaluate(predictions)
-
-    println("Silhouette: ", silhouette)
+    println("Silhouette KMeansAlgorithm: ", silhouette)
 
     model.clusterCenters.foreach(println)
+
+    def cost = model.computeCost(transformedData)
+    println("Cost: " + cost)
   }
 }

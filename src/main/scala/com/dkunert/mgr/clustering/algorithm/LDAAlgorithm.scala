@@ -1,13 +1,14 @@
 package com.dkunert.mgr.clustering.algorithm
 
 import org.apache.spark.ml.clustering.LDA
+import org.apache.spark.ml.evaluation.ClusteringEvaluator
 import org.apache.spark.sql.DataFrame
 
 object LDAAlgorithm {
 
   def run(transformedData: DataFrame): Unit = {
     // Trains a LDA model.
-    val lda = new LDA().setK(10).setMaxIter(10)
+    val lda = new LDA().setK(2).setMaxIter(1)
     val model = lda.fit(transformedData)
 
     val ll = model.logLikelihood(transformedData)
@@ -21,7 +22,12 @@ object LDAAlgorithm {
     topics.show(false)
 
     // Shows the result.
-    val transformed = model.transform(transformedData)
-    transformed.show(false)
+    val predictions = model.transform(transformedData)
+
+    val evaluator = new ClusteringEvaluator()
+    //val silhouette = evaluator.evaluate(predictions)
+    //println("Silhouette LDAAlgorithm: ", silhouette)
+    //predictions.show(false)
+
   }
 }
