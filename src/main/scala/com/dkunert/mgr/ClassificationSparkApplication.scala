@@ -19,7 +19,7 @@ object ClassificationSparkApplication {
     //val inputFileLocation = "F:\\bigdata\\titanic\\all\\train.csv"
     //val inputFileLocation = "C:\\magisterka\\dane\\klasyfikacja\\poker.csv"
     //val inputFileLocation = "C:\\magisterka\\dane\\klasyfikacja\\adult.csv"
-    val inputFileLocation = "C:\\magisterka\\dane\\klasyfikacja\\HIGGS\\HIGGS_1000.csv"
+    val inputFileLocation = "C:\\magisterka\\dane\\klasyfikacja\\HIGGS\\HIGGS_100000.csv"
 
     val rawData = CsvDataLoader.loadCsvData(spark, inputFileLocation, false)
 
@@ -28,7 +28,9 @@ object ClassificationSparkApplication {
 
     // Naive Bayes requires nonnegative feature values but found
 
-    val allAlgorithms = List(DecisionTreeClassifierAlgorithm, GradientBoostedTreeClassifierAlgorithm, LineSupportVectorMachineAlgorithm, LogisticRegressionAlgorithm,
+    // LineSupportVectorMachineAlgorithm - super długo trwa
+
+    val allAlgorithms = List(DecisionTreeClassifierAlgorithm, GradientBoostedTreeClassifierAlgorithm, LogisticRegressionAlgorithm,
       MultilayerPerceptronClassifierAlgorithm, RandomForrestClassifierAlgorithm)
 
     //val allAlgorithms = List(DecisionTreeClassifierAlgorithm)

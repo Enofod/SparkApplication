@@ -10,6 +10,7 @@ object MultilayerPerceptronClassifierAlgorithm extends ClassificationAlgorithm {
     // input layer of size 4 (features), two intermediate of size 5 and 4
     // and output of size 3 (classes)
     val layers = Array[Int](28, 20, 15, 2)
+    //val layers = Array[Int](7, 20, 15, 2)
 
     // Train a GBT model.
     return new MultilayerPerceptronClassifier()
