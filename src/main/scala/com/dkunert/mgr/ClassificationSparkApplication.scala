@@ -11,6 +11,8 @@ object ClassificationSparkApplication {
 
     Logger.getLogger("org").setLevel(Level.OFF)
     Logger.getLogger("akka").setLevel(Level.OFF)
+    Logger.getLogger("com").setLevel(Level.OFF)
+    Logger.getLogger("breeze").setLevel(Level.OFF)
     val spark = SparkSessionFactory.getSparkSession("Classification app")
 
     //val inputFileLocation = "F:\\bigdata\\titanic\\all\\train.csv"
@@ -27,7 +29,14 @@ object ClassificationSparkApplication {
     //MultilayerPerceptronClassifierAlgorithm.run(transformedData)
     //LineSupportVectorMachineAlgorithm.run(transformedData) // ONLY FOR BINARY
 
-    HiggsClassificationRunner.run(MultinominalLogisticRegressionAlgorithm, rawData)
+    // Naive Bayes requires nonnegative feature values but found
+
+    val allAlgorithms = List(DecisionTreeClassifierAlgorithm, GradientBoostedTreeClassifierAlgorithm, LineSupportVectorMachineAlgorithm, MultinominalLogisticRegressionAlgorithm,
+      PerceptronClassifierAlgorithm, RandomForrestClassifierAlgorithm)
+
+    allAlgorithms.foreach(alg => HiggsClassificationRunner.run(alg, rawData))
+
+    //HiggsClassificationRunner.run(MultinominalLogisticRegressionAlgorithm, rawData)
 
   }
 }

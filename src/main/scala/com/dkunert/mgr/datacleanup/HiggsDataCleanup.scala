@@ -7,8 +7,8 @@ import org.apache.spark.sql.DataFrame
 object HiggsDataCleanup {
 
   def cleanupData(inputData: DataFrame): DataFrame = {
-    inputData.printSchema()
-    inputData.head(5).foreach(println);
+    //inputData.printSchema()
+    //inputData.head(5).foreach(println);
 
     var dataset = inputData.select(
       inputData("_c0").cast("float"),

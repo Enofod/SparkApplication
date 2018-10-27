@@ -13,7 +13,7 @@ object DecisionTreeClassifierAlgorithm extends ClassificationAlgorithm {
 
     return new DecisionTreeClassifier()
       .setLabelCol(PipelineFactory.INDEXED_LABEL_KEY)
-      .setFeaturesCol(PipelineFactory.INDEXED_LABEL_KEY)
+      .setFeaturesCol(PipelineFactory.INDEXED_FEATURES_KEY)
 
     /*// Train model. This also runs the indexers.
     val model = pipeline.fit(trainingData)

@@ -17,21 +17,23 @@ object HiggsClassificationRunner {
     val Array(trainingData, testData) = cleanedData.randomSplit(Array(0.7, 0.3))
 
     // Train model.
+    val className = algorithm.getClass().getSimpleName();
     BenchmarkUtil.startTime()
     val trainModel = pipeline.fit(trainingData)
-    println("Train model time [ms]: " + BenchmarkUtil.getProcessingTime())
+    println(className + " Train model time [ms]: " + BenchmarkUtil.getProcessingTime())
 
     // Make predictions.
     BenchmarkUtil.startTime()
     val predictions = trainModel.transform(testData)
-    println("Predict on model time [ms]: " + BenchmarkUtil.getProcessingTime())
+    println(className + " Predict on model time [ms]: " + BenchmarkUtil.getProcessingTime())
 
     val evaluator = new MulticlassClassificationEvaluator()
-      .setLabelCol("indexedLabel")
-      .setPredictionCol("prediction")
+      .setLabelCol(PipelineFactory.INDEXED_LABEL_KEY)
+      .setPredictionCol(PipelineFactory.PREDICTION_KEY)
       .setMetricName("accuracy")
     val accuracy = evaluator.evaluate(predictions)
-    println("Accuracy = " + accuracy)
+    println(className + " Accuracy = " + accuracy)
+    println("------------------------------------------------------------------------------------------------------------")
   }
 
 }

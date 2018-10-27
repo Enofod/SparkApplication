@@ -16,5 +16,4 @@ object RandomForrestClassifierAlgorithm extends ClassificationAlgorithm {
     //val rfModel = model.stages(2).asInstanceOf[RandomForestClassificationModel]
     //println("Learned classification forest model:\n" + rfModel.toDebugString)
   }
-
 }

@@ -6,7 +6,7 @@ object SparkSessionFactory {
 
   def getSparkSession(applicationName: String): SparkSession = {
     return SparkSession.builder()
-      .appName("Titatnic app")
+      .appName(applicationName)
       .config("spark.master", "local")
       .getOrCreate();
   }

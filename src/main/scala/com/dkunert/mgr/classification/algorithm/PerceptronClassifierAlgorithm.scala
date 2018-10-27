@@ -4,7 +4,7 @@ import com.dkunert.mgr.classification.pipeline.PipelineFactory
 import org.apache.spark.ml.PipelineStage
 import org.apache.spark.ml.classification.MultilayerPerceptronClassifier
 
-object MultilayerPerceptronClassifierAlgorithm extends ClassificationAlgorithm {
+object PerceptronClassifierAlgorithm extends ClassificationAlgorithm {
 
   def get(): PipelineStage = {
     // specify layers for the neural network:
