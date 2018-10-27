@@ -2,6 +2,7 @@ package com.dkunert.mgr
 
 import com.dkunert.mgr.classification.algorithm._
 import com.dkunert.mgr.classification.runner.HiggsClassificationRunner
+import com.dkunert.mgr.datacleanup.HiggsDataCleanup
 import com.dkunert.mgr.factory.SparkSessionFactory
 import com.dkunert.mgr.loader.CsvDataLoader
 import org.apache.log4j.{Level, Logger}
@@ -22,19 +23,17 @@ object ClassificationSparkApplication {
 
     val rawData = CsvDataLoader.loadCsvData(spark, inputFileLocation, false)
 
-    //MultinominalLogisticRegressionAlgorithm.run(transformedData)
-    //DecisionTreeClassifierAlgorithm.run(transformedData)
-    //RandomForrestClassifierAlgorithm.run(transformedData)
-    //GradientBoostedTreeClassifierAlgorithm.run(transformedData) // ONLY FOR BINARY
-    //MultilayerPerceptronClassifierAlgorithm.run(transformedData)
-    //LineSupportVectorMachineAlgorithm.run(transformedData) // ONLY FOR BINARY
+    val cleanedData = HiggsDataCleanup.cleanupData(rawData)
+    val Array(trainingData, testData) = cleanedData.randomSplit(Array(0.7, 0.3))
 
     // Naive Bayes requires nonnegative feature values but found
 
     val allAlgorithms = List(DecisionTreeClassifierAlgorithm, GradientBoostedTreeClassifierAlgorithm, LineSupportVectorMachineAlgorithm, MultinominalLogisticRegressionAlgorithm,
       PerceptronClassifierAlgorithm, RandomForrestClassifierAlgorithm)
 
-    allAlgorithms.foreach(alg => HiggsClassificationRunner.run(alg, rawData))
+    //val allAlgorithms = List(DecisionTreeClassifierAlgorithm)
+
+    allAlgorithms.foreach(alg => HiggsClassificationRunner.run(alg, cleanedData, trainingData, testData))
 
     //HiggsClassificationRunner.run(MultinominalLogisticRegressionAlgorithm, rawData)
 

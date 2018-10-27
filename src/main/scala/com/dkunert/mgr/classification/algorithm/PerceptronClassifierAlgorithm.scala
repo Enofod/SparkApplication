@@ -1,6 +1,5 @@
 package com.dkunert.mgr.classification.algorithm
 
-import com.dkunert.mgr.classification.pipeline.PipelineFactory
 import org.apache.spark.ml.PipelineStage
 import org.apache.spark.ml.classification.MultilayerPerceptronClassifier
 
@@ -14,8 +13,6 @@ object PerceptronClassifierAlgorithm extends ClassificationAlgorithm {
 
     // Train a GBT model.
     return new MultilayerPerceptronClassifier()
-      .setLabelCol(PipelineFactory.INDEXED_LABEL_KEY)
-      .setFeaturesCol(PipelineFactory.INDEXED_FEATURES_KEY)
       .setLayers(layers)
       .setBlockSize(128)
       .setSeed(1234L)
