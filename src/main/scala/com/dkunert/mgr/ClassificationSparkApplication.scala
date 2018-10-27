@@ -28,8 +28,8 @@ object ClassificationSparkApplication {
 
     // Naive Bayes requires nonnegative feature values but found
 
-    val allAlgorithms = List(DecisionTreeClassifierAlgorithm, GradientBoostedTreeClassifierAlgorithm, LineSupportVectorMachineAlgorithm, MultinominalLogisticRegressionAlgorithm,
-      PerceptronClassifierAlgorithm, RandomForrestClassifierAlgorithm)
+    val allAlgorithms = List(DecisionTreeClassifierAlgorithm, GradientBoostedTreeClassifierAlgorithm, LineSupportVectorMachineAlgorithm, LogisticRegressionAlgorithm,
+      MultilayerPerceptronClassifierAlgorithm, RandomForrestClassifierAlgorithm)
 
     //val allAlgorithms = List(DecisionTreeClassifierAlgorithm)
 

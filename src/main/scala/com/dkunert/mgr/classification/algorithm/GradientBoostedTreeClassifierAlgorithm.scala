@@ -9,8 +9,8 @@ object GradientBoostedTreeClassifierAlgorithm extends ClassificationAlgorithm {
 
     // Train a GBT model.
     return new GBTClassifier()
-      .setMaxIter(10)
-      .setFeatureSubsetStrategy("auto")
+      //.setMaxIter(10)
+      //.setFeatureSubsetStrategy("auto")
 
    /* // Select (prediction, true label) and compute test error.
     val evaluator = new MulticlassClassificationEvaluator()

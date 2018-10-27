@@ -4,7 +4,7 @@ import com.dkunert.mgr.classification.pipeline.PipelineFactory
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.sql.DataFrame
 
-object HiggsDataCleanup {
+object HiggsMinimalDataCleanup {
 
   def cleanupData(inputData: DataFrame): DataFrame = {
     var dataset = inputData.select(
@@ -42,7 +42,7 @@ object HiggsDataCleanup {
     dataset = dataset.na.drop()
 
     val requiredFeatures = Array("_c1", "_c2", "_c3", "_c4", "_c5", "_c6", "_c7", "_c8", "_c9", "_c10", "_c11", "_c12", "_c13",
-      "_c14", "_c15", "_c16", "_c17", "_c18", "_c19", "_c20", "_c21", "_c22", "_c23", "_c24", "_c25", "_c26", "_c27", "_c28")
+      "_c14", "_c15", "_c16", "_c17", "_c18", "_c19", "_c20", "_c21", "_c22", "_c23", "_c24", "_c25", "_c26", "_c27")
 
     val assembler = new VectorAssembler()
       .setInputCols(requiredFeatures)

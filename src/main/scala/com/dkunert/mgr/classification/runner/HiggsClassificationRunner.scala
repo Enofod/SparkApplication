@@ -3,7 +3,7 @@ package com.dkunert.mgr.classification.runner
 import com.dkunert.mgr.classification.algorithm.ClassificationAlgorithm
 import com.dkunert.mgr.classification.pipeline.PipelineFactory
 import com.dkunert.mgr.util.BenchmarkUtil
-import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
+import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator
 import org.apache.spark.sql.DataFrame
 
 object HiggsClassificationRunner {
@@ -21,24 +21,21 @@ object HiggsClassificationRunner {
     testData.printSchema()
     testData.head(5).foreach(println)*/
 
-
     // Train model.
     val className = algorithm.getClass().getSimpleName();
     BenchmarkUtil.startTime()
     val trainModel = pipeline.fit(trainingData)
-    println(className + " Train model time [ms]: " + BenchmarkUtil.getProcessingTime())
+    println(className + " Czas uczenia [ms]: " + BenchmarkUtil.getProcessingTime())
 
     // Make predictions.
     BenchmarkUtil.startTime()
     val predictions = trainModel.transform(testData)
-    println(className + " Predict on model time [ms]: " + BenchmarkUtil.getProcessingTime())
+    println(className + " Czas predykcji [ms]: " + BenchmarkUtil.getProcessingTime())
 
-    val evaluator = new MulticlassClassificationEvaluator()
+    val evaluator = new BinaryClassificationEvaluator()
       .setLabelCol(PipelineFactory.LABEL_KEY)
-      .setPredictionCol(PipelineFactory.PREDICTION_KEY)
-      .setMetricName("accuracy")
     val accuracy = evaluator.evaluate(predictions)
-    println(className + " Accuracy = " + accuracy)
+    println(className + " Precyzja = " + accuracy)
     println("------------------------------------------------------------------------------------------------------------")
   }
 
