@@ -1,9 +1,9 @@
 package com.dkunert.mgr
 
-import com.dkunert.mgr.datacleanup.PokerDataCleanup
+import com.dkunert.mgr.classification.algorithm._
+import com.dkunert.mgr.classification.runner.HiggsClassificationRunner
 import com.dkunert.mgr.factory.SparkSessionFactory
 import com.dkunert.mgr.loader.CsvDataLoader
-import com.dkunert.mgr.util.BenchmarkUtil
 import org.apache.log4j.{Level, Logger}
 
 object ClassificationSparkApplication {
@@ -14,15 +14,11 @@ object ClassificationSparkApplication {
     val spark = SparkSessionFactory.getSparkSession("Classification app")
 
     //val inputFileLocation = "F:\\bigdata\\titanic\\all\\train.csv"
-    val inputFileLocation = "C:\\magisterka\\dane\\klasyfikacja\\poker.csv"
+    //val inputFileLocation = "C:\\magisterka\\dane\\klasyfikacja\\poker.csv"
+    //val inputFileLocation = "C:\\magisterka\\dane\\klasyfikacja\\adult.csv"
+    val inputFileLocation = "C:\\magisterka\\dane\\klasyfikacja\\HIGGS\\HIGGS_1000.csv"
 
     val rawData = CsvDataLoader.loadCsvData(spark, inputFileLocation, false)
-
-    val transformedData = PokerDataCleanup.cleanupData(rawData)
-
-    //transformedData.head(5).foreach(println)
-
-    BenchmarkUtil.startTime();
 
     //MultinominalLogisticRegressionAlgorithm.run(transformedData)
     //DecisionTreeClassifierAlgorithm.run(transformedData)
@@ -30,7 +26,8 @@ object ClassificationSparkApplication {
     //GradientBoostedTreeClassifierAlgorithm.run(transformedData) // ONLY FOR BINARY
     //MultilayerPerceptronClassifierAlgorithm.run(transformedData)
     //LineSupportVectorMachineAlgorithm.run(transformedData) // ONLY FOR BINARY
-    //NaiveBayesAlgorithm.run(transformedData) // ONLY FOR BINARY
-    println("Processing time: " + BenchmarkUtil.getProcessingTime())
+
+    HiggsClassificationRunner.run(MultinominalLogisticRegressionAlgorithm, rawData)
+
   }
 }

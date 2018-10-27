@@ -1,47 +1,21 @@
 package com.dkunert.mgr.classification.algorithm
 
-import org.apache.spark.ml.Pipeline
-import org.apache.spark.ml.classification.{DecisionTreeClassificationModel, DecisionTreeClassifier}
-import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
-import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorIndexer}
-import org.apache.spark.sql.DataFrame
+import com.dkunert.mgr.classification.pipeline.PipelineFactory
+import org.apache.spark.ml.PipelineStage
+import org.apache.spark.ml.classification.DecisionTreeClassifier
 
-object DecisionTreeClassifierAlgorithm {
+object DecisionTreeClassifierAlgorithm extends ClassificationAlgorithm {
 
-  def run(transformedData: DataFrame): Unit = {
+  def get(): PipelineStage = {
 
-    val labelIndexer = new StringIndexer()
-      .setInputCol("label")
-      .setOutputCol("indexedLabel")
-      .fit(transformedData)
-    // Automatically identify categorical features, and index them.
-    val featureIndexer = new VectorIndexer()
-      .setInputCol("features")
-      .setOutputCol("indexedFeatures")
-      .setMaxCategories(9) // features with > 4 distinct values are treated as continuous.
-      .fit(transformedData)
+        // Split the data into training and test sets (30% held out for testing).
+    //val Array(trainingData, testData) = transformedData.randomSplit(Array(0.7, 0.3))
 
+    return new DecisionTreeClassifier()
+      .setLabelCol(PipelineFactory.INDEXED_LABEL_KEY)
+      .setFeaturesCol(PipelineFactory.INDEXED_LABEL_KEY)
 
-    // Split the data into training and test sets (30% held out for testing).
-    val Array(trainingData, testData) = transformedData.randomSplit(Array(0.7, 0.3))
-
-    val dt = new DecisionTreeClassifier()
-      .setLabelCol("indexedLabel")
-      .setFeaturesCol("indexedFeatures")
-
-    // Convert indexed labels back to original labels.
-    val labelConverter = new IndexToString()
-      .setInputCol("prediction")
-      .setOutputCol("predictedLabel")
-      .setLabels(labelIndexer.labels)
-
-    // Chain indexers and tree in a Pipeline.
-    val pipeline = new Pipeline()
-      .setStages(Array(labelIndexer, featureIndexer, dt, labelConverter))
-
-    trainingData.head(10).foreach(println)
-
-    // Train model. This also runs the indexers.
+    /*// Train model. This also runs the indexers.
     val model = pipeline.fit(trainingData)
 
     // Make predictions.
@@ -56,10 +30,10 @@ object DecisionTreeClassifierAlgorithm {
       .setPredictionCol("prediction")
       .setMetricName("accuracy")
     val accuracy = evaluator.evaluate(predictions)
-    println("Test Error = " + (1.0 - accuracy))
+    println("Accuracy = " + accuracy)
 
     val treeModel = model.stages(2).asInstanceOf[DecisionTreeClassificationModel]
-    println("Learned classification tree model:\n" + treeModel.toDebugString)
+    println("Learned classification tree model:\n" + treeModel.toDebugString)*/
   }
 
 }
