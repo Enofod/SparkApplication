@@ -9,10 +9,9 @@ object MultilayerPerceptronClassifierAlgorithm extends ClassificationAlgorithm {
 
     // specify layers for the neural network:
     // Features, intermediate, intermediate, classes
-    val layers = Array[Int](12 , 20, 15, 2)
+    val layers = Array[Int](28 , 32, 12, 2)
     //val layers = Array[Int](7, 20, 15, 2)
 
-    // Train a GBT model.
     return new MultilayerPerceptronClassifier()
       .setLayers(layers)
   }

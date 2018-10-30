@@ -8,35 +8,40 @@ import org.apache.spark.sql.DataFrame
 
 object HiggsClassificationRunner {
 
-  def run(algorithm: ClassificationAlgorithm, cleanedData: DataFrame, trainingData: DataFrame, testData: DataFrame): Unit = {
+  def run(algorithm: ClassificationAlgorithm, cleanedData: DataFrame, trainingData: DataFrame, testData: DataFrame, iteration: Double): List[Double] = {
     val pipeline = PipelineFactory.getPipeline(algorithm.get(), cleanedData)
-
-    /*println("cleaned")
-    cleanedData.printSchema()
-    cleanedData.head(5).foreach(println)
-    println("training")
-    trainingData.printSchema()
-    trainingData.head(5).foreach(println)
-    println("test")
-    testData.printSchema()
-    testData.head(5).foreach(println)*/
 
     // Train model.
     val className = algorithm.getClass().getSimpleName();
     BenchmarkUtil.startTime()
     val trainModel = pipeline.fit(trainingData)
-    println(className + " Czas uczenia [ms]: " + BenchmarkUtil.getProcessingTime())
+    val trainTime = BenchmarkUtil.getProcessingTime()
+    println(className + " Czas uczenia [ms]: " + trainTime)
 
     // Make predictions.
     BenchmarkUtil.startTime()
     val predictions = trainModel.transform(testData)
-    println(className + " Czas predykcji [ms]: " + BenchmarkUtil.getProcessingTime())
+    val testTime = BenchmarkUtil.getProcessingTime()
+    println(className + " Czas predykcji [ms]: " + testTime)
 
-    val evaluator = new BinaryClassificationEvaluator()
-      .setLabelCol(PipelineFactory.LABEL_KEY)
-    val accuracy = evaluator.evaluate(predictions)
-    println(className + " Precyzja = " + accuracy)
+    /*val evaluator = new BinaryClassificationEvaluator()
+      .setLabelCol(PipelineFactory.LABEL_KEY)*/
+
+    val accuracyEvaluator = new BinaryClassificationEvaluator().setLabelCol(PipelineFactory.LABEL_KEY)
+    val areaUnderROCEvaluator = new BinaryClassificationEvaluator().setMetricName("areaUnderROC").setLabelCol(PipelineFactory.LABEL_KEY)
+    val areaUnderPREvaluator = new BinaryClassificationEvaluator().setMetricName("areaUnderPR").setLabelCol(PipelineFactory.LABEL_KEY)
+    val accuracy = accuracyEvaluator.evaluate(predictions)
+    System.out.println("Accuracy = " + accuracy)
+    val areaUnderROC = areaUnderROCEvaluator.evaluate(predictions)
+    System.out.println("areaUnderROC = " + areaUnderROC)
+    val areaUnderPR = areaUnderPREvaluator.evaluate(predictions)
+    System.out.println("areaUnderPR = " + areaUnderPR)
+
+    //val accuracy = evaluator.evaluate(predictions)
+    //println(className + " Precyzja = " + accuracy)
     println("------------------------------------------------------------------------------------------------------------")
+
+    return List(iteration, trainTime, testTime, accuracy, areaUnderROC, areaUnderPR)
   }
 
 }

@@ -5,10 +5,11 @@ import com.dkunert.mgr.classification.runner.HiggsClassificationRunner
 import com.dkunert.mgr.datacleanup.HiggsDataCleanup
 import com.dkunert.mgr.factory.SparkSessionFactory
 import com.dkunert.mgr.loader.CsvDataLoader
+import com.dkunert.mgr.util.ExcelUtil
 import org.apache.log4j.{Level, Logger}
 
 object ClassificationSparkApplication {
-  def main(args:Array[String]): Unit = {
+  def main(args: Array[String]): Unit = {
 
     Logger.getLogger("org").setLevel(Level.OFF)
     Logger.getLogger("akka").setLevel(Level.OFF)
@@ -16,23 +17,33 @@ object ClassificationSparkApplication {
     Logger.getLogger("breeze").setLevel(Level.OFF)
     val spark = SparkSessionFactory.getSparkSession("Classification app")
 
-    val inputFileLocation = "C:\\magisterka\\dane\\klasyfikacja\\HIGGS\\HIGGS_1000.csv"
+    var fileName = "HIGGS_1000";
 
-    val rawData = CsvDataLoader.loadCsvData(spark, inputFileLocation, false)
+    val inputFileLocation = "C:\\magisterka\\dane\\klasyfikacja\\HIGGS\\" + fileName + ".csv"
+    val outputFolder = "C:\\Users\\Dawid\\Dropbox\\prywatne\\studia\\studia\\mgr\\wyniki\\"
 
-    val cleanedData = HiggsDataCleanup.cleanupData(rawData)
-    val Array(trainingData, testData) = cleanedData.randomSplit(Array(0.7, 0.3))
+    var iteration = 0;
 
-    // Naive Bayes requires nonnegative feature values but found
+    // for loop execution with a range
+    for (iteration <- 1 to 5) {
+      val rawData = CsvDataLoader.loadCsvData(spark, inputFileLocation, false)
 
-    // LineSupportVectorMachineAlgorithm - super długo trwa
+      val cleanedData = HiggsDataCleanup.cleanupData(rawData)
+      val Array(trainingData, testData) = cleanedData.randomSplit(Array(0.8, 0.2))
 
-    val allAlgorithms = List(DecisionTreeClassifierAlgorithm, GradientBoostedTreeClassifierAlgorithm, LogisticRegressionAlgorithm,
-      MultilayerPerceptronClassifierAlgorithm, RandomForrestClassifierAlgorithm)
+      // Naive Bayes requires nonnegative feature values but found
 
-    //val allAlgorithms = List(DecisionTreeClassifierAlgorithm)
+      // LineSupportVectorMachineAlgorithm - super długo trwa
 
-    allAlgorithms.foreach(alg => HiggsClassificationRunner.run(alg, cleanedData, trainingData, testData))
+      val allAlgorithms = List(DecisionTreeClassifierAlgorithm, GradientBoostedTreeClassifierAlgorithm, LogisticRegressionAlgorithm,
+       MultilayerPerceptronClassifierAlgorithm, RandomForrestClassifierAlgorithm)
 
+
+      allAlgorithms.foreach(alg => {
+        val result = HiggsClassificationRunner.run(alg, cleanedData, trainingData, testData, iteration)
+        ExcelUtil.writeToExcel(outputFolder + fileName + "_" + alg.getClass().getSimpleName + ".xlsx",
+          iteration, result)
+      })
+    }
   }
 }

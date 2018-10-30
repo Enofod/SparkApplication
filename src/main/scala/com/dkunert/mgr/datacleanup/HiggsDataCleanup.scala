@@ -46,7 +46,7 @@ object HiggsDataCleanup {
 
     val assembler = new VectorAssembler()
       .setInputCols(requiredFeatures)
-      .setOutputCol(PipelineFactory.UNPROCESSED_FEATURES_KEY)
+      .setOutputCol(PipelineFactory.FEATURES_KEY)
 
     return assembler.transform(dataset)
   }
