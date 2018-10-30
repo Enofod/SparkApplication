@@ -24,16 +24,12 @@ object HiggsClassificationRunner {
     val testTime = BenchmarkUtil.getProcessingTime()
     println(className + " Czas predykcji [ms]: " + testTime)
 
-    /*val evaluator = new BinaryClassificationEvaluator()
-      .setLabelCol(PipelineFactory.LABEL_KEY)*/
-
     val accuracyEvaluator = new BinaryClassificationEvaluator().setLabelCol(PipelineFactory.LABEL_KEY)
     val areaUnderROCEvaluator = new BinaryClassificationEvaluator().setMetricName("areaUnderROC").setLabelCol(PipelineFactory.LABEL_KEY)
     val areaUnderPREvaluator = new BinaryClassificationEvaluator().setMetricName("areaUnderPR").setLabelCol(PipelineFactory.LABEL_KEY)
     val accuracy = accuracyEvaluator.evaluate(predictions)
+
     System.out.println("Accuracy = " + accuracy)
-    val areaUnderROC = areaUnderROCEvaluator.evaluate(predictions)
-    System.out.println("areaUnderROC = " + areaUnderROC)
     val areaUnderPR = areaUnderPREvaluator.evaluate(predictions)
     System.out.println("areaUnderPR = " + areaUnderPR)
 
@@ -41,7 +37,7 @@ object HiggsClassificationRunner {
     //println(className + " Precyzja = " + accuracy)
     println("------------------------------------------------------------------------------------------------------------")
 
-    return List(iteration, trainTime, testTime, accuracy, areaUnderROC, areaUnderPR)
+    return List(iteration, trainTime, testTime, accuracy, accuracy, areaUnderPR)
   }
 
 }
