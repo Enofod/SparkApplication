@@ -7,8 +7,6 @@ object LineSupportVectorMachineAlgorithm extends ClassificationAlgorithm {
 
   def get(): PipelineStage = {
     return new LinearSVC()
-      //.setMaxIter(10)
-      //.setRegParam(0.1)
   }
 
 }

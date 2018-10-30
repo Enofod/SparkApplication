@@ -6,7 +6,6 @@ import org.apache.spark.ml.classification.DecisionTreeClassifier
 object DecisionTreeClassifierAlgorithm extends ClassificationAlgorithm {
 
   def get(): PipelineStage = {
-
     return new DecisionTreeClassifier()
 
     /*val treeModel = model.stages(2).asInstanceOf[DecisionTreeClassificationModel]
