@@ -16,13 +16,14 @@ object HiggsClassificationRunner {
     BenchmarkUtil.startTime()
     val trainModel = pipeline.fit(trainingData)
     val trainTime = BenchmarkUtil.getProcessingTime()
-    println(className + " Czas uczenia [ms]: " + trainTime)
+    println(className + " Train time [ms]: " + trainTime)
 
     // Make predictions.
     BenchmarkUtil.startTime()
     val predictions = trainModel.transform(testData)
+    predictions.collect()
     val testTime = BenchmarkUtil.getProcessingTime()
-    println(className + " Czas predykcji [ms]: " + testTime)
+    println(className + " Prediction time [ms]: " + testTime)
 
     val accuracyEvaluator = new BinaryClassificationEvaluator().setLabelCol(PipelineFactory.LABEL_KEY)
     val areaUnderROCEvaluator = new BinaryClassificationEvaluator().setMetricName("areaUnderROC").setLabelCol(PipelineFactory.LABEL_KEY)
