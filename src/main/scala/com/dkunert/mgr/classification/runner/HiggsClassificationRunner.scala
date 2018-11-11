@@ -22,6 +22,7 @@ object HiggsClassificationRunner {
     BenchmarkUtil.startTime()
     val predictions = trainModel.transform(testData)
     predictions.collect()
+    System.gc()
     val testTime = BenchmarkUtil.getProcessingTime()
     println(className + " Prediction time [ms]: " + testTime)
 
@@ -34,6 +35,7 @@ object HiggsClassificationRunner {
     val areaUnderPR = areaUnderPREvaluator.evaluate(predictions)
     System.out.println("areaUnderPR = " + areaUnderPR)
 
+    System.gc()
     //val accuracy = evaluator.evaluate(predictions)
     //println(className + " Precyzja = " + accuracy)
     println("------------------------------------------------------------------------------------------------------------")

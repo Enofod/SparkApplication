@@ -26,7 +26,8 @@ object ClassificationSparkApplication {
 
     val spark = SparkSessionFactory.getSparkSession("Classification app")
 
-    var fileNames = List("HIGGS_1000", "HIGGS_10000", "HIGGS_100000", "HIGGS_1000000,", "HIGGS_4000000", "HIGGS_8000000", "HIGGS")
+    //var fileNames = List("HIGGS_1000", "HIGGS_10000", "HIGGS_100000", "HIGGS_1000000", "HIGGS_4000000", "HIGGS_8000000", "HIGGS")
+    var fileNames = List("HIGGS_8000000", "HIGGS")
 
 
     val outputFolder = "C:\\Users\\Dawid\\Dropbox\\prywatne\\studia\\studia\\mgr\\wyniki\\nowe\\"
@@ -60,7 +61,7 @@ object ClassificationSparkApplication {
         val Array(trainingData, testData) = cleanedData.randomSplit(Array(0.8, 0.2))
 
 
-        val allAlgorithms = List(DecisionTreeClassifierAlgorithm, GradientBoostedTreeClassifierAlgorithm, LogisticRegressionAlgorithm,
+        val allAlgorithms = List(GradientBoostedTreeClassifierAlgorithm, DecisionTreeClassifierAlgorithm, LogisticRegressionAlgorithm,
           MultilayerPerceptronClassifierAlgorithm, RandomForrestClassifierAlgorithm)
         allAlgorithms.foreach(alg => {
           val result = HiggsClassificationRunner.run(alg, cleanedData, trainingData, testData, rowCount)
@@ -72,6 +73,5 @@ object ClassificationSparkApplication {
 
     println("END DATE: " + ZonedDateTime.now())
   }
-
 
 }
