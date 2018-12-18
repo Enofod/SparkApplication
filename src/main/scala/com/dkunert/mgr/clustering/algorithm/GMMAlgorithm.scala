@@ -6,6 +6,7 @@ import org.apache.spark.ml.clustering.GaussianMixture
 object GMMAlgorithm extends ClusteringAlgorithm {
 
   def get(): PipelineStage = {
-    return new GaussianMixture();
+    return new GaussianMixture()
+      .setK(2);
   }
 }

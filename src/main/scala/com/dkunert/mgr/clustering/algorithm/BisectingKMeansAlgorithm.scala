@@ -6,6 +6,7 @@ import org.apache.spark.ml.clustering.BisectingKMeans
 object BisectingKMeansAlgorithm extends ClusteringAlgorithm {
 
   def get(): PipelineStage = {
-    return new BisectingKMeans();
+    return new BisectingKMeans()
+      .setK(2);
   }
 }

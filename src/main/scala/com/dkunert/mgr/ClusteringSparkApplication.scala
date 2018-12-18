@@ -26,7 +26,9 @@ object ClusteringSparkApplication {
 
     val spark = SparkSessionFactory.getSparkSession("Clustering app")
 
-    var fileNames = List("HIGGS_1000", "HIGGS_10000", "HIGGS_100000", "HIGGS_1000000", "HIGGS_4000000", "HIGGS_8000000", "HIGGS")
+    //var fileNames = List("HIGGS_1000", "HIGGS_10000", "HIGGS_100000", "HIGGS_1000000", "HIGGS_4000000", "HIGGS_8000000", "HIGGS")
+    var fileNames = List("HIGGS_1000", "HIGGS_10000", "HIGGS_100000", "HIGGS_1000000")
+    //var fileNames = List("HIGGS_4000000", "HIGGS_8000000", "HIGGS")
     //var fileNames = List("HIGGS_8000000", "HIGGS")
 
 
@@ -40,7 +42,7 @@ object ClusteringSparkApplication {
       // for loop execution with a range
       for (iteration <- 1 to 6) {
         var rowCount = iteration
-        if (iteration == 3)
+        if (iteration == 4)
           NUMBER_OF_FEATURES = 7
 
         val rawData = CsvDataLoader.loadCsvData(spark, inputFileLocation, false)
@@ -53,10 +55,12 @@ object ClusteringSparkApplication {
           cleanedData = HiggsClusteringMinimalDataCleanup.cleanupData(rawData)
         }
 
+        val Array(trainingData, testData) = cleanedData.randomSplit(Array(0.8, 0.2))
+
         // LDA TAKES WAY TO LONG TIME
-        val allAlgorithms = List(BisectingKMeansAlgorithm, GMMAlgorithm, KMeansAlgorithm)
+        val allAlgorithms = List(GMMAlgorithm, KMeansAlgorithm, BisectingKMeansAlgorithm)
         allAlgorithms.foreach(alg => {
-          val result = HiggsClusteringRunner.run(alg, cleanedData, rowCount)
+          val result = HiggsClusteringRunner.run(alg, cleanedData, trainingData, testData, rowCount)
           ExcelClusteringUtil.writeToExcel(outputFolder + fileName + "_" + NUMBER_OF_FEATURES + "_" + alg.getClass().getSimpleName + "_" + createDate + ".xlsx",
             rowCount, result)
         })

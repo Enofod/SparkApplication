@@ -23,8 +23,8 @@ object ExcelClusteringUtil {
       var sheet = workbook.getSheetAt(0)
       var row = sheet.createRow(0)
       row.createCell(0).setCellValue("Iteracja")
-      row.createCell(1).setCellValue("Czas uczenia")
-      row.createCell(2).setCellValue("Czas predykcji")
+      row.createCell(1).setCellValue("Czas uczenia [ms]")
+      row.createCell(2).setCellValue("Czas predykcji [ms]")
       row.createCell(3).setCellValue("Sylwetka")
     }
 
