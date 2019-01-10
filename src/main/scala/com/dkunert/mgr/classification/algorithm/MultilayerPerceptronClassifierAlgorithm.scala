@@ -11,7 +11,6 @@ object MultilayerPerceptronClassifierAlgorithm extends ClassificationAlgorithm {
     // specify layers for the neural network:
     // Features, intermediate, intermediate, classes
     val layers = Array[Int](ClassificationSparkApplication.NUMBER_OF_FEATURES , 32, 12, 2)
-    //val layers = Array[Int](7, 20, 15, 2)
 
     return new MultilayerPerceptronClassifier()
       .setLayers(layers)

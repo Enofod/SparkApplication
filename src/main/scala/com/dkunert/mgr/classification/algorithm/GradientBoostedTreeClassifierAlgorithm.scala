@@ -7,9 +7,6 @@ object GradientBoostedTreeClassifierAlgorithm extends ClassificationAlgorithm {
 
   def get(): PipelineStage = {
     return new GBTClassifier()
-
-    /* val gbtModel = model.stages(2).asInstanceOf[GBTClassificationModel]
-    println(s"Learned classification GBT model:\n ${gbtModel.toDebugString}")*/
   }
 
 }

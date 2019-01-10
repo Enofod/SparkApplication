@@ -7,8 +7,5 @@ object RandomForrestClassifierAlgorithm extends ClassificationAlgorithm {
 
   def get(): PipelineStage = {
     return new RandomForestClassifier()
-
-    //val rfModel = model.stages(2).asInstanceOf[RandomForestClassificationModel]
-    //println("Learned classification forest model:\n" + rfModel.toDebugString)
   }
 }

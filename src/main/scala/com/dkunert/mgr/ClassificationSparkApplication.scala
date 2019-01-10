@@ -26,9 +26,7 @@ object ClassificationSparkApplication {
 
     val spark = SparkSessionFactory.getSparkSession("Classification app")
 
-    //var fileNames = List("HIGGS_1000", "HIGGS_10000", "HIGGS_100000", "HIGGS_1000000", "HIGGS_4000000", "HIGGS_8000000", "HIGGS")
-    var fileNames = List("HIGGS_8000000", "HIGGS")
-
+    var fileNames = List("HIGGS_1000", "HIGGS_10000", "HIGGS_100000", "HIGGS_1000000", "HIGGS_4000000", "HIGGS_8000000", "HIGGS")
 
     val outputFolder = "C:\\Users\\Dawid\\Dropbox\\prywatne\\studia\\studia\\mgr\\wyniki\\nowe\\"
     var iteration = 0;
@@ -52,11 +50,6 @@ object ClassificationSparkApplication {
           rowCount = iteration - 5
           cleanedData = HiggsMinimalDataCleanup.cleanupData(rawData)
         }
-
-
-        // Naive Bayes requires nonnegative feature values but found
-
-        // LineSupportVectorMachineAlgorithm - super długo trwa
 
         val Array(trainingData, testData) = cleanedData.randomSplit(Array(0.8, 0.2))
 

@@ -26,11 +26,7 @@ object ClusteringSparkApplication {
 
     val spark = SparkSessionFactory.getSparkSession("Clustering app")
 
-    //var fileNames = List("HIGGS_1000", "HIGGS_10000", "HIGGS_100000", "HIGGS_1000000", "HIGGS_4000000", "HIGGS_8000000", "HIGGS")
-    var fileNames = List("HIGGS_1000", "HIGGS_10000", "HIGGS_100000", "HIGGS_1000000")
-    //var fileNames = List("HIGGS_4000000", "HIGGS_8000000", "HIGGS")
-    //var fileNames = List("HIGGS_8000000", "HIGGS")
-
+    var fileNames = List("HIGGS_1000", "HIGGS_10000", "HIGGS_100000", "HIGGS_1000000", "HIGGS_4000000", "HIGGS_8000000", "HIGGS")
 
     val outputFolder = "C:\\Users\\Dawid\\Dropbox\\prywatne\\studia\\studia\\mgr\\wyniki\\klasteryzacja\\"
     var iteration = 0;
